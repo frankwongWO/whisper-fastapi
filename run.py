@@ -1,10 +1,17 @@
 import os
 import shutil
+import datetime
 from werkzeug.utils import secure_filename
 from fastapi import FastAPI, HTTPException, UploadFile, File,Form
 from faster_whisper import WhisperModel
 
+
 app = FastAPI()
+
+# Set the directory for uploading files
+today = datetime.date.today()
+date_str = today.strftime('%Y-%m-%d')
+UPLOAD_FOLDER = f'./file/{date_str}'
 
 @app.post("/transcribe")
 async def transcribe(model_size: str = Form(...),device: str = Form(...),compute_type: str = Form(...),file: UploadFile = File(...)):
@@ -15,9 +22,6 @@ async def transcribe(model_size: str = Form(...),device: str = Form(...),compute
             status_code=400, detail="Invalid file type, please upload an audio or video file")
         
     # print(model_size, device, compute_type)
-    
-    # Set the directory for uploading files
-    UPLOAD_FOLDER = './file'
 
     # Check if the directory exists and create it if not
     if not os.path.exists(UPLOAD_FOLDER):
