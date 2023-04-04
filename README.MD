@@ -1,7 +1,7 @@
 # run command
-
+```
 ./run.ps1
-
+```
 # api docs
 
 http://127.0.0.1:8123/docs#/
@@ -22,4 +22,6 @@ https://github.com/guillaumekln/faster-whisper/issues/85
 
 # check cuda version
 
+```
 nvcc -V
+```
