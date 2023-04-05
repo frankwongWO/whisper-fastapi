@@ -65,10 +65,14 @@ async def transcribe(model_size: str = Form(...), device: str = Form(...), compu
     else:
         segments_list = [{"start": segment.start, "end": segment.end,
                       "text": segment.text} for segment in segments]
+        
+        
+    text = ','.join([segment['text'] for segment in segments_list])
+    print(text)
 
     print(segments_list)
 
-    return {"segments": segments_list, "language": info.language, "language_probability": info.language_probability}
+    return {"text": text,"segments": segments_list, "language": info.language, "language_probability": info.language_probability }
 
 class TranslationRequest(BaseModel):
     text: str
