@@ -2,8 +2,10 @@ import os
 import shutil
 import datetime
 from werkzeug.utils import secure_filename
-from fastapi import FastAPI, HTTPException, UploadFile, File,Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from faster_whisper import WhisperModel
+from translate import Translator
+from pydantic import BaseModel
 
 
 app = FastAPI()
@@ -14,14 +16,12 @@ date_str = today.strftime('%Y-%m-%d')
 UPLOAD_FOLDER = f'./file/{date_str}'
 
 @app.post("/transcribe")
-async def transcribe(model_size: str = Form(...),device: str = Form(...),compute_type: str = Form(...),file: UploadFile = File(...)):
+async def transcribe(model_size: str = Form(...), device: str = Form(...), compute_type: str = Form(...),to_lang: str = None, file: UploadFile = File(...)):
     # Check if the file is an audio file
     ALLOWED_FILE_TYPES = {'audio', 'video'}
     if file.content_type.split('/')[0] not in ALLOWED_FILE_TYPES:
         raise HTTPException(
             status_code=400, detail="Invalid file type, please upload an audio or video file")
-        
-    # print(model_size, device, compute_type)
 
     # Check if the directory exists and create it if not
     if not os.path.exists(UPLOAD_FOLDER):
@@ -31,7 +31,7 @@ async def transcribe(model_size: str = Form(...),device: str = Form(...),compute
     filename = secure_filename(file.filename)
     target_path = os.path.join(UPLOAD_FOLDER, filename)
 
-    # Save the file to the target path 
+    # Save the file to the target path
     with open(target_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
@@ -40,8 +40,8 @@ async def transcribe(model_size: str = Form(...),device: str = Form(...),compute
     #     shutil.copyfileobj(file.file, buffer)
 
     # model_size = tiny, small, medium, large-v2,
-    model_size = model_size 
-    
+    model_size = model_size
+
     model = WhisperModel(model_size, device=device, compute_type=compute_type)
 
     # Run on GPU with FP16
@@ -56,13 +56,29 @@ async def transcribe(model_size: str = Form(...),device: str = Form(...),compute
     print("Detected language '%s' with probability %f" %
           (info.language, info.language_probability))
 
-    # for segment in segments:
-    #     print("[%.2fs -> %.2fs] %s" %
-    #           (segment.start, segment.end, segment.text))
-
-    segments_list = [{"start": segment.start, "end": segment.end,
-                      "text": segment.text} for segment in segments]
+    # Translate the segments text
     
+    if(to_lang != None):
+        translator = Translator(from_lang=info.language,to_lang=to_lang)
+        segments_list = [{"start": segment.start, "end": segment.end,
+                      "text": translator.translate(segment.text)} for segment in segments]
+    else:
+        segments_list = [{"start": segment.start, "end": segment.end,
+                      "text": segment.text} for segment in segments]
+
     print(segments_list)
 
     return {"segments": segments_list, "language": info.language, "language_probability": info.language_probability}
+
+class TranslationRequest(BaseModel):
+    text: str
+    to_lang: str
+    from_lang :str
+
+@app.post("/translate")
+async def translate_text(req: TranslationRequest):
+    # Translate the text to the specified language
+    translator = Translator(from_lang=req.from_lang,to_lang=req.to_lang)
+    translation = translator.translate(req.text)
+
+    return {"text": translation}
