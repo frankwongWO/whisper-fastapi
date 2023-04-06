@@ -56,7 +56,7 @@ async def transcribe(model_size: str = Form(...), device: str = Form(...), compu
     print("Detected language '%s' with probability %f" %
           (info.language, info.language_probability))
     
-    print(to_lang)
+    print('to_lang:',to_lang)
 
     # Translate the segments text
     
