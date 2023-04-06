@@ -16,7 +16,7 @@ date_str = today.strftime('%Y-%m-%d')
 UPLOAD_FOLDER = f'./file/{date_str}'
 
 @app.post("/transcribe")
-async def transcribe(model_size: str = Form(...), device: str = Form(...), compute_type: str = Form(...),to_lang: str = None, file: UploadFile = File(...)):
+async def transcribe(model_size: str = Form(...), device: str = Form(...), compute_type: str = Form(...),to_lang: str =  Form(None), file: UploadFile = File(...)):
     # Check if the file is an audio file
     ALLOWED_FILE_TYPES = {'audio', 'video'}
     if file.content_type.split('/')[0] not in ALLOWED_FILE_TYPES:
@@ -55,6 +55,8 @@ async def transcribe(model_size: str = Form(...), device: str = Form(...), compu
     segments, info = model.transcribe(target_path, beam_size=5)
     print("Detected language '%s' with probability %f" %
           (info.language, info.language_probability))
+    
+    print(to_lang)
 
     # Translate the segments text
     
