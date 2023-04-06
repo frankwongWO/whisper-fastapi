@@ -1,7 +1,17 @@
-# run command
+# command
+
+run
+
 ```
 ./run.ps1
 ```
+
+deactivate
+
+```
+deactivate
+```
+
 # api docs
 
 http://127.0.0.1:8123/docs#/
