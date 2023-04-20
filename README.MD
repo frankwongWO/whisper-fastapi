@@ -23,11 +23,11 @@ uvicorn run:app --reload --port 8123
 http://localhost:8123/docs
 
 
-# run in colab
+# Run in colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/frankwongWO/7e1fb9de4ef6f14b8ebfc4f2f84251c8/faster-whisper-fastapi.ipynb)
 
 
-# windows command
+# Windows command
 
 run in windows
 ```
@@ -39,22 +39,34 @@ deactivate
 deactivate
 ```
 
-# install CUDA
+# Installation
+Before using Faster Whisper FastAPI, you need to install CUDA and cuDNN. Here are the installation instructions:
+
+## Install CUDA
+You can download the CUDA installer from the NVIDIA website. Here are the steps:
+
+Go to the following link to download the CUDA installer:
 
 https://developer.nvidia.com/cuda-11-8-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exe_local
 
-# install cuDNN
+Run the CUDA installer and follow the instructions in the installation wizard.
+
+## Install cuDNN
+You can download the cuDNN files from the NVIDIA website. Here are the steps:
+
+Go to the following link to download the cuDNN files:
 
 https://developer.nvidia.com/cudnn
 
-# After a day of trial and error, I finally solved the issue!
+Extract the cuDNN files to a directory.
+
+## Troubleshooting
 
 For anyone having a problem, copy all DLLs from CUDNN, as well as cublasLt64_11.dll from the GPU Computing Toolkit into your ctranslate2 package directory. Since I'm using a venv, it was \faster-whisper\venv\Lib\site-packages\ctranslate2", but if you use Conda or just regular Python without virtual environments, it'll be different.
 
 https://github.com/guillaumekln/faster-whisper/issues/85
 
-# check cuda version
-
+## Check the CUDA version. Run the following command in the command line:
 ```
 nvcc -V
 ```
