@@ -55,7 +55,7 @@ To use the transcribe function, you need to send a POST request to the FastAPI s
 * to_lang: a string specifying the language to which the audio should be transcribed. Defaults to None.
 * file: an uploaded file object containing the audio data to transcribe.
 
-# Here is an example Python code to send a POST request:
+## Here is an example Python code to send a POST request:
 ```python
 import requests
 
