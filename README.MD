@@ -75,8 +75,7 @@ print(response.json())
 In the above example, we use the requests library to send a POST request to the FastAPI server. We specify the model size, device, and compute type to use, and upload the audio data to transcribe as a file. The server will return a JSON object containing the transcribed text result.
 
 # Run in colab
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)]
-(https://colab.research.google.com/gist/frankwongWO/09cee2fed968c98b9a8a6ae2c207a8a1/faster-whisper-fastapi.ipynb)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/frankwongWO/7e1fb9de4ef6f14b8ebfc4f2f84251c8/faster-whisper-fastapi.ipynb)
 
 
 # Windows command
