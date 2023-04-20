@@ -23,7 +23,7 @@ uvicorn run:app --reload --port 8123
 http://localhost:8123/docs
 
 # Requirements
-* Python 3.6 or higher
+* Python 3.9 or higher
 
 # Installation
 Before using Faster Whisper FastAPI, you need to install CUDA and cuDNN. Here are the installation instructions:
