@@ -60,13 +60,13 @@ In the above example, we use the requests library to send a POST request to the 
 
 # Windows command
 
-run in windows
-```
+## run in windows
+```shell
 ./run.ps1
 ```
 
-deactivate
-```
+## deactivate
+```shell
 deactivate
 ```
 
