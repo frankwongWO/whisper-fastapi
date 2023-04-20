@@ -63,10 +63,9 @@ url = "http://localhost:8000/transcribe"
 
 files = {"file": ("audio.mp3", open("audio.wav", "rb"))}
 data = {
-    "model_size": "base",
-    "device": "cpu",
+    "model_size": "large-v2",
+    "device": "cuda",
     "compute_type": "float16",
-    "to_lang": "en",
 }
 
 response = requests.post(url, data=data, files=files)
