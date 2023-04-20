@@ -61,7 +61,7 @@ import requests
 
 url = "http://localhost:8000/transcribe"
 
-files = {"file": open("audio.wav", "rb")}
+files = {"file": ("audio.mp3", open("audio.wav", "rb"))}
 data = {
     "model_size": "base",
     "device": "cpu",
