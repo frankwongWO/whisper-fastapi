@@ -70,3 +70,9 @@ https://github.com/guillaumekln/faster-whisper/issues/85
 ```
 nvcc -V
 ```
+# Reference
+For more information on Faster Whisper FastAPI, please visit the following GitHub repository:
+
+https://github.com/guillaumekln/faster-whisper
+
+I hope this information is helpful to you!
