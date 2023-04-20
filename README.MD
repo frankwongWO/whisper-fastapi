@@ -22,6 +22,10 @@ uvicorn run:app --reload --port 8123
 4. Open the API documentation in your web browser using the following URL:
 http://localhost:8123/docs
 
+# Requirements
+* Python 3.6 or higher
+
+
 
 # Run in colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/frankwongWO/7e1fb9de4ef6f14b8ebfc4f2f84251c8/faster-whisper-fastapi.ipynb)
