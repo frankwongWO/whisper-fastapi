@@ -28,11 +28,31 @@ http://localhost:8123/docs
 # Usage
 To use the transcribe function, you need to send a POST request to the FastAPI server with the following parameters:
 
-* model_size: a string specifying the size of the model to use. Valid values are "large-v2", "large-v1", "base", "tiny", "small", and "medium". You can find available models on the Hugging Face Hub.
+* model_size: a string specifying the size of the model to use. Valid values are "large-v2", "large-v1", "base", "tiny", "small", and "medium". You can find available models on the [Hugging Face Hub](https://huggingface.co/guillaumekln).
 * device: a string specifying on which device to run the model. Valid values are "cpu" and "cuda". Defaults to "cpu".
 * compute_type: a string specifying which compute type to use. Valid values are "int8", "int8_float16", and "float16". Defaults to "float16".
 * to_lang: a string specifying the language to which the audio should be transcribed. Defaults to None.
 * file: an uploaded file object containing the audio data to transcribe.
+
+# Here is an example Python code to send a POST request:
+```
+import requests
+
+url = "http://localhost:8000/transcribe"
+
+files = {"file": open("audio.wav", "rb")}
+data = {
+    "model_size": "base",
+    "device": "cpu",
+    "compute_type": "float16",
+    "to_lang": "en",
+}
+
+response = requests.post(url, data=data, files=files)
+print(response.json())
+
+```
+In the above example, we use the requests library to send a POST request to the FastAPI server. We specify the model size, device, and compute type to use, and upload the audio data to transcribe as a file. The server will return a JSON object containing the transcribed text result.
 
 # Run in colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/frankwongWO/7e1fb9de4ef6f14b8ebfc4f2f84251c8/faster-whisper-fastapi.ipynb)
@@ -84,6 +104,9 @@ nvcc -V
 # Reference
 For more information on Faster Whisper FastAPI, please visit the following GitHub repository:
 
-https://github.com/guillaumekln/faster-whisper
+* [faster-whisper](https://github.com/guillaumekln/faster-whisper)
+* [FastAPI documentation](https://fastapi.tiangolo.com/)
+* [FastAPI GitHub repository](https://github.com/tiangolo/fastapi)
+
 
 I hope this information is helpful to you!
