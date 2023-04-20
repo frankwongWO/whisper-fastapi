@@ -35,7 +35,7 @@ To use the transcribe function, you need to send a POST request to the FastAPI s
 * file: an uploaded file object containing the audio data to transcribe.
 
 # Here is an example Python code to send a POST request:
-```
+```python
 import requests
 
 url = "http://localhost:8000/transcribe"
