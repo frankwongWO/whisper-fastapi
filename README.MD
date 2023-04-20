@@ -15,6 +15,13 @@ git clone https://github.com/frankwongWO/faster-whisper-fastapi.git
 ```
 pip install -r requirements.txt
 ```
+3. Start the FastAPI server using the following command:
+```
+uvicorn run:app --reload --port 8123
+```
+4. Open the API documentation in your web browser using the following URL:
+http://localhost:8123/docs
+
 
 # colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/frankwongWO/7e1fb9de4ef6f14b8ebfc4f2f84251c8/faster-whisper-fastapi.ipynb)
@@ -22,21 +29,15 @@ pip install -r requirements.txt
 
 # command
 
-run
-
+run in windows
 ```
 ./run.ps1
 ```
 
 deactivate
-
 ```
 deactivate
 ```
-
-# api docs
-
-http://127.0.0.1:8123/docs#/
 
 # install CUDA
 
