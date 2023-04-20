@@ -1,3 +1,17 @@
+# Faster Whisper FastAPI
+
+🚀 Welcome to the Faster Whisper FastAPI project! This project is designed to provide a fast and efficient implementation of the Whisper algorithm using the FastAPI framework.
+
+## Getting Started
+
+🔍 To get started with the Faster Whisper FastAPI project, you can follow these steps:
+
+1. Clone the project repository using the following command:
+
+```
+git clone https://github.com/frankwongWO/faster-whisper-fastapi.git
+```
+
 # colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/frankwongWO/7e1fb9de4ef6f14b8ebfc4f2f84251c8/faster-whisper-fastapi.ipynb)
 
