@@ -25,7 +25,14 @@ http://localhost:8123/docs
 # Requirements
 * Python 3.6 or higher
 
+# Usage
+To use the transcribe function, you need to send a POST request to the FastAPI server with the following parameters:
 
+* model_size: a string specifying the size of the model to use. Valid values are "large-v2", "large-v1", "base", "tiny", "small", and "medium". You can find available models on the Hugging Face Hub.
+* device: a string specifying on which device to run the model. Valid values are "cpu" and "cuda". Defaults to "cpu".
+* compute_type: a string specifying which compute type to use. Valid values are "int8", "int8_float16", and "float16". Defaults to "float16".
+* to_lang: a string specifying the language to which the audio should be transcribed. Defaults to None.
+* file: an uploaded file object containing the audio data to transcribe.
 
 # Run in colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/frankwongWO/7e1fb9de4ef6f14b8ebfc4f2f84251c8/faster-whisper-fastapi.ipynb)
