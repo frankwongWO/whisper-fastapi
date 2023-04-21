@@ -50,7 +50,6 @@ Extract the cuDNN files to a directory.
 To use the transcribe function, you need to send a POST request to the FastAPI server with the following parameters:
 
 * model_size: a string specifying the size of the model to use. Valid values are "large-v2", "large-v1", "base", "tiny", "small", and "medium". You can find available models on the [Hugging Face Hub](https://huggingface.co/guillaumekln).
-* device: a string specifying on which device to run the model. Valid values are "cpu" and "cuda". Defaults to "cpu".
 * compute_type: a string specifying which compute type to use. Valid values are "int8", "int8_float16", and "float16". Defaults to "float16".
 * to_lang: a string specifying the language to which the audio should be transcribed. Defaults to None.
 * file: an uploaded file object containing the audio data to transcribe.
@@ -64,7 +63,6 @@ url = "http://localhost:8000/transcribe"
 files = {"file": ("audio.mp3", open("audio.wav", "rb"))}
 data = {
     "model_size": "large-v2",
-    "device": "cuda",
     "compute_type": "float16",
 }
 
