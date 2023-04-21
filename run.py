@@ -3,6 +3,7 @@ import shutil
 import datetime
 from werkzeug.utils import secure_filename
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi.middleware.cors import CORSMiddleware
 from faster_whisper import WhisperModel
 from translate import Translator
 from pydantic import BaseModel
@@ -10,18 +11,50 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Set the directory for uploading files
 today = datetime.date.today()
-date_str = today.strftime('%Y-%m-%d')
-UPLOAD_FOLDER = f'./file/{date_str}'
+date_str = today.strftime("%Y-%m-%d")
+UPLOAD_FOLDER = f"./file/{date_str}"
+
 
 @app.post("/transcribe")
-async def transcribe(model_size: str = Form(...), device: str = Form(...), compute_type: str = Form(...),to_lang: str =  Form(None), file: UploadFile = File(...)):
+async def transcribe(
+    model_size: str = Form(...),
+    compute_type: str = Form(...),
+    device: str = Form("cuda"),
+    to_lang: str = Form(None),
+    file: UploadFile = File(...),
+):
+    print(
+        f"content_type: {file.content_type}\n"
+        f"to_lang: {to_lang}\n"
+        f"model_size: {model_size}\n"
+        f"compute_type: {compute_type}\n"
+        f"device: {device}"
+    )
     # Check if the file is an audio file
-    ALLOWED_FILE_TYPES = {'audio', 'video'}
-    if file.content_type.split('/')[0] not in ALLOWED_FILE_TYPES:
+    ALLOWED_FILE_TYPES = {
+        "audio/mpeg",
+        "video/mp4",
+        "audio/mp3",
+        "audio/ogg",
+        "application/octet-stream",
+    }
+    if file.content_type not in ALLOWED_FILE_TYPES:
         raise HTTPException(
-            status_code=400, detail="Invalid file type, please upload an audio or video file")
+            status_code=400,
+            detail="Invalid file type, please upload an audio or video file",
+        )
+
+    # file.content_type.split("/")[0]
 
     # Check if the directory exists and create it if not
     if not os.path.exists(UPLOAD_FOLDER):
@@ -53,38 +86,52 @@ async def transcribe(model_size: str = Form(...), device: str = Form(...), compu
 
     # Transcribe the file using faster-whisper
     segments, info = model.transcribe(target_path, beam_size=5)
-    print("Detected language '%s' with probability %f" %
-          (info.language, info.language_probability))
-    
-    print('to_lang:',to_lang)
+    print(
+        "Detected language '%s' with probability %f"
+        % (info.language, info.language_probability)
+    )
 
     # Translate the segments text
-    
-    if(to_lang != None):
-        translator = Translator(from_lang=info.language,to_lang=to_lang)
-        segments_list = [{"start": segment.start, "end": segment.end,
-                      "text": translator.translate(segment.text)} for segment in segments]
+
+    if to_lang != None:
+        translator = Translator(from_lang=info.language, to_lang=to_lang)
+        segments_list = [
+            {
+                "start": segment.start,
+                "end": segment.end,
+                "text": translator.translate(segment.text),
+            }
+            for segment in segments
+        ]
     else:
-        segments_list = [{"start": segment.start, "end": segment.end,
-                      "text": segment.text} for segment in segments]
-        
-        
-    text = ','.join([segment['text'] for segment in segments_list])
+        segments_list = [
+            {"start": segment.start, "end": segment.end, "text": segment.text}
+            for segment in segments
+        ]
+
+    text = ",".join([segment["text"] for segment in segments_list])
     print(text)
 
     print(segments_list)
 
-    return {"text": text,"segments": segments_list, "language": info.language, "language_probability": info.language_probability }
+    return {
+        "text": text,
+        "segments": segments_list,
+        "language": info.language,
+        "language_probability": info.language_probability,
+    }
+
 
 class TranslationRequest(BaseModel):
     text: str
     to_lang: str
-    from_lang :str
+    from_lang: str
+
 
 @app.post("/translate")
 async def translate_text(req: TranslationRequest):
     # Translate the text to the specified language
-    translator = Translator(from_lang=req.from_lang,to_lang=req.to_lang)
+    translator = Translator(from_lang=req.from_lang, to_lang=req.to_lang)
     translation = translator.translate(req.text)
 
     return {"text": translation}
