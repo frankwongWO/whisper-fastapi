@@ -105,9 +105,9 @@ async def transcribe(
         ]
 
     text = ",".join([segment["text"] for segment in segments_list])
-    print(text)
 
-    print(segments_list)
+    print("text", text)
+    print("segments_list", segments_list)
 
     end_time = time.time()  # 记录结束时间
     processing_time = end_time - start_time  # 计算处理时间
@@ -177,8 +177,8 @@ async def base64DataTranscribe(req: base64DataTranscribe_Request):
         ]
 
     text = ",".join([segment["text"] for segment in segments_list])
-    print(text)
-    print(segments_list)
+    print("text", text)
+    print("segments_list", segments_list)
 
     end_time = time.time()  # 记录结束时间
     processing_time = end_time - start_time  # 计算处理时间
@@ -190,6 +190,35 @@ async def base64DataTranscribe(req: base64DataTranscribe_Request):
         "segments": segments_list,
         "language": info.language,
         "language_probability": info.language_probability,
+        "processing_time": processing_time,  # 返回处理时间
+    }
+
+
+class Base64FastTranscribe_Request(BaseModel):
+    file: str
+
+
+@app.post("/base64FastTranscribe")
+async def base64FastTranscribe(req: Base64FastTranscribe_Request):
+    start_time = time.time()  # 记录开始时间
+    data = base64.b64decode(req.file)
+    binary_data = io.BytesIO(data)
+
+    model = WhisperModel("small", device="cuda", compute_type="int8")
+
+    segments, info = model.transcribe(
+        binary_data, beam_size=1, without_timestamps=True, temperature=0, language="zh"
+    )
+
+    text = ""
+    for item in segments:
+        text += item[2]
+
+    end_time = time.time()  # 记录结束时间
+    processing_time = end_time - start_time  # 计算处理时间
+
+    return {
+        "text": text,
         "processing_time": processing_time,  # 返回处理时间
     }
 
