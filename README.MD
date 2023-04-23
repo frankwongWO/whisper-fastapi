@@ -59,7 +59,7 @@ To use the transcribe function, you need to send a POST request to the FastAPI s
 ```python
 import requests
 
-url = "http://localhost:8000/transcribe"
+url = "http://localhost:8123/transcribe"
 
 files = {"file": ("audio.mp3", open("audio.wav", "rb"))}
 data = {
